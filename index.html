@@ -62,7 +62,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
       <p class="eyebrow">GET TO KNOW ME</p>
       <h2 class="section-title">About Me</h2>
       <div class="about-box">
-        <p>I am a Computer Science and Engineering graduate who is interested in technology, problem-solving, and web development. I am currently improving my skills by learning and building projects.</p>
+        <p>I am a Computer Science and Engineering graduate passionated in technology, problem-solving, and web development. I am currently improving my skills by learning and building projects.</p>
         <p><strong>Education:</strong> CSE Graduate, International Standard University</p>
         <p><strong>Current goal:</strong> Build practical projects and become more confident with development tools.</p>
       </div>
@@ -123,33 +123,99 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </section>
 
     <section class="section container" id="projects">
-      <p class="eyebrow">MY WORK</p>
-      <h2 class="section-title">Projects</h2>
-      <p class="section-intro">Here are my wab devolopment projects . I am building ptactice project to improve my programming skills and guid real-world experience </p>
-      <div class="project-grid">
-        <article class="project-card">
-          <div class="project-number">01</div>
-          <h3>Personal Portfolio Website</h3>
-          <p>A responsive website introducing me, my skills, and my projects.</p>
-          <span class="tag">HTML • CSS • JavaScript</span>
-          <a class="button secondary" href="#home">View Project</a>
+
+    <p class="eyebrow">MY WORK</p>
+
+    <h2 class="section-title">Projects</h2>
+
+    <p class="section-intro">
+        Here are some of my practical projects where I apply
+        my programming and web development skills.
+    </p>
+
+    <div class="project-grid">
+
+        <article class="project-card featured-project">
+
+            <div class="project-number">01</div>
+
+            <!-- Project Main Preview -->
+
+<button class="project-preview"
+        onclick="openProjectGallery()"
+        aria-label="View project screenshots">
+
+    <img src="images/hardware-home.png"
+         alt="Asif Hardware Homepage">
+
+    <span class="preview-overlay">
+        <i class="fa-solid fa-magnifying-glass-plus"></i>
+        View Screenshots
+    </span>
+
+</button>
+
+<!-- Project Image Popup -->
+
+<div id="projectLightbox" class="project-lightbox">
+
+    <button class="lightbox-close"
+            onclick="closeProjectGallery()">
+        &times;
+    </button>
+
+    <button class="lightbox-prev"
+            onclick="changeProjectImage(-1)">
+        &#10094;
+    </button>
+
+    <img id="lightboxImage" src="" alt="Project Screenshot">
+
+    <button class="lightbox-next"
+            onclick="changeProjectImage(1)">
+        &#10095;
+    </button>
+
+    <p id="lightboxCaption"></p>
+
+</div>
+
+            <h3>Asif Hardware &amp; Battery Shop</h3>
+
+            <p>
+                A full-stack e-commerce website designed for
+                an electronics and battery shop. Users can
+                explore products, add items to cart and place orders.
+            </p>
+
+            <span class="tag">
+                HTML • CSS • JavaScript • Python • Flask
+            </span>
+
+            <div class="project-actions">
+
+                <a class="button primary"
+                   href="https://asif-hardware-updated.onrender.com/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Live Demo
+                </a>
+
+                <a class="button secondary"
+                   href="https://github.com/AZAsifOS/asif-hardware-updated"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <i class="fa-brands fa-github"></i>
+                    GitHub
+                </a>
+
+            </div>
+
         </article>
-        <article class="project-card">
-          <div class="project-number">02</div>
-          <h3>Student Result System</h3>
-          <p>A planned beginner project to record student marks and display results.</p>
-          <span class="tag">Planned Project</span>
-          <a class="button secondary" href="#home">View Project</a>
-        </article>
-        <article class="project-card">
-          <div class="project-number">03</div>
-          <h3>Expense Tracker</h3>
-          <p>A planned project to record daily spending and review monthly totals.</p>
-          <span class="tag">Planned Project</span>
-          <a class="button secondary" href="#home">View Project</a>
-        </article>
-      </div>
-    </section>
+
+    </div>
+
+</section>
 
     <section class="section contact-section" id="contact">
   <div class="container">

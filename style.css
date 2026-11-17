@@ -55,7 +55,10 @@ a { color: inherit; text-decoration: none; }
 .skill span { display: block; color: var(--muted); font-size: .8rem; font-weight: 400; margin-top: 4px; }
 .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 25px; }
 .project-card { padding: 24px; background: var(--panel); border: 1px solid var(--border); border-radius: 18px; transition: transform .2s, border-color .2s; }
-.project-card:hover { transform: translateY(-5px); border-color: rgba(108,229,193,.5); }
+.project-card:hover {
+    transform: none;
+    border-color: rgba(108,229,193,.5);
+}
 .project-number { color: var(--accent-2); font-weight: 800; font-size: .8rem; letter-spacing: 2px; }
 .project-card h3 { font: 700 1.15rem 'Manrope', sans-serif; }
 .project-card p { color: var(--muted); font-size: .94rem; }
@@ -163,4 +166,223 @@ a { color: inherit; text-decoration: none; }
 }
 a.button[href*="linkedin.com"] {
     gap: 8px;
+}
+/* Contact Section - Equal Button Size */
+.contact-info .button {
+    width: 255px;
+    min-width: 255px;
+    height: 50px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .contact-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* Equal Size Home Buttons */
+
+.hero-actions .button {
+    width: 216px !important;
+    min-width: 216px;
+    height: 65px;
+    min-height: 65px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+/* ===== Project Screenshot Styling ===== */
+
+.project-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-image {
+    transform: scale(1.02);
+}
+
+.project-card .button {
+    margin-top: 15px;
+}
+/* ===== Project Image Gallery ===== */
+
+.featured-project {
+    grid-column: 1 / -1;
+}
+
+.project-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.gallery-item {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel-light);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 190px;
+    display: block;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.04);
+}
+
+.gallery-item p {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 8px;
+    color: var(--text);
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 650px) {
+    .project-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-item img {
+        height: 200px;
+    }
+}
+/* Project Preview */
+.project-preview {
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.project-preview img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    border-radius: 12px;
+}
+
+.preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    transition: .3s;
+}
+
+.project-preview .preview-overlay {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.project-preview:hover .preview-overlay {
+    opacity: 1;
+}
+
+/* Popup */
+.project-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,.95);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.project-lightbox.active {
+    display: flex;
+}
+
+.project-lightbox img {
+    max-width: 85%;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.project-lightbox button {
+    position: absolute;
+    border: none;
+    background: rgba(255,255,255,.15);
+    color: white;
+    font-size: 28px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.lightbox-close {
+    top: 20px;
+    right: 25px;
+}
+
+.lightbox-prev {
+    left: 25px;
+    top: 50%;
+}
+
+.lightbox-next {
+    right: 25px;
+    top: 50%;
+}
+
+#lightboxCaption {
+    color: white;
+    margin-top: 15px;
+}
+
+@media (max-width: 600px) {
+    .project-preview img {
+        height: 200px;
+    }
+
+    .project-lightbox img {
+        max-width: 95%;
+        max-height: 65vh;
+    }
+
+    .lightbox-prev {
+        left: 5px;
+    }
+
+    .lightbox-next {
+        right: 5px;
+    }
 }
