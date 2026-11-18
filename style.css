@@ -23,6 +23,78 @@ a { color: inherit; text-decoration: none; }
 .container { width: min(1100px, calc(100% - 40px)); margin-inline: auto; }
 .site-header { position: sticky; top: 0; z-index: 10; background: rgba(11,16,32,.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
 .nav { min-height: 74px; display: flex; align-items: center; justify-content: space-between; }
+/* Theme switch positioning */
+.theme-switch {
+  margin-left: 12px;
+  margin-right: auto;
+  flex-shrink: 0;
+}
+/* Theme Switch Design */
+.theme-switch {
+  position: relative;
+  width: 68px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: #18233a;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.theme-icon {
+  z-index: 2;
+  font-size: 16px;
+  width: 50%;
+  text-align: center;
+}
+
+.theme-slider {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  left: 3px;
+  top: 2px;
+  border-radius: 50%;
+  background: #7c9cff;
+  transition: transform 0.3s ease;
+}
+
+/* Light Mode Switch Position */
+body.light-mode .theme-slider {
+  transform: translateX(32px);
+}
+/* Light Mode - Section Improvements */
+
+body.light-mode .about-box {
+  background: #ffffff;
+  color: #334155;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .skill-category {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .skill-category h3 {
+  color: var(--accent);
+}
+
+body.light-mode .skill-items span {
+  background: #f1f5fb;
+  border-color: rgba(0, 0, 0, 0.10);
+  color: #334155;
+}
+
+body.light-mode .skill-items span:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
 .logo { font: 800 1.55rem 'Manrope', sans-serif; letter-spacing: -1px; }
 .logo span, .accent { color: var(--accent-2); }
 .nav-links { display: flex; gap: 28px; color: var(--muted); font-size: .95rem; }
@@ -385,4 +457,96 @@ a.button[href*="linkedin.com"] {
     .lightbox-next {
         right: 5px;
     }
+}
+/* Light Mode Colors */
+body.light-mode {
+  --bg: #EAF4FF;
+  --panel: #ffffff;
+  --panel-light: #DCEBFA;
+  --text: #172033;
+  --muted: #596579;
+  --accent: #315fce;
+  --accent-2: #159b7b;
+  --border: rgba(0, 0, 0, 0.12);
+
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Header */
+body.light-mode .site-header {
+  background: rgba(234, 244, 255, 0.92);
+}
+
+/* Mobile Navigation */
+body.light-mode .nav-links {
+  background: #EAF4FF;
+}
+
+/* Theme Switch */
+body.light-mode .theme-switch {
+  background: #e4eaf5;
+}
+/* Light Mode - Projects Section */
+
+body.light-mode .project-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .project-card h3 {
+  color: #172033;
+}
+
+body.light-mode .project-card p {
+  color: #596579;
+}
+
+body.light-mode .project-number {
+  color: #159b7b;
+}
+
+body.light-mode .tag {
+  background: rgba(49, 95, 206, 0.10);
+  color: #315fce;
+}
+
+/* Light Mode - Buttons */
+
+body.light-mode .button.secondary {
+  background: #ffffff;
+  color: #315fce;
+  border-color: rgba(49, 95, 206, 0.25);
+}
+
+/* Light Mode - Contact Section */
+
+body.light-mode .contact-section {
+  background: linear-gradient(
+    90deg,
+    rgba(49, 95, 206, 0.06),
+    rgba(21, 155, 123, 0.07)
+  );
+  border-color: rgba(0, 0, 0, 0.12);
+}
+/* Smooth Dark / Light Mode Transition */
+
+body,
+.site-header,
+.nav-links,
+.about-box,
+.skill,
+.skill-category,
+.skill-items span,
+.project-card,
+.contact-section,
+.footer,
+.button,
+.theme-switch {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
 }

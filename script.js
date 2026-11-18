@@ -30,6 +30,14 @@ const projectImages = [
     {
         src: "images/hardware-admin.png",
         caption: "Asif Hardware - Admin Dashboard"
+    },
+    {
+        src: "images/hardware-admin 2.png",
+        caption: "Asif Hardware - Admin Screenshot 2"
+    },
+    {
+        src: "images/hardware-admin 3.png",
+        caption: "Asif Hardware - Admin Screenshot 3"
     }
 ];
 
@@ -66,4 +74,37 @@ function showProjectImage() {
 
     document.getElementById("lightboxCaption").textContent =
         projectImages[currentProjectImage].caption;
+}
+// Dark / Light Mode Toggle
+const themeToggle = document.getElementById("themeToggle");
+
+if (themeToggle) {
+  const savedTheme = localStorage.getItem("portfolio-theme");
+
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+  }
+
+  themeToggle.setAttribute(
+    "aria-label",
+    document.body.classList.contains("light-mode")
+      ? "Switch to dark mode"
+      : "Switch to light mode"
+  );
+
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-mode");
+
+    const isLightMode = document.body.classList.contains("light-mode");
+
+    localStorage.setItem(
+      "portfolio-theme",
+      isLightMode ? "light" : "dark"
+    );
+
+    themeToggle.setAttribute(
+      "aria-label",
+      isLightMode ? "Switch to dark mode" : "Switch to light mode"
+    );
+  });
 }
