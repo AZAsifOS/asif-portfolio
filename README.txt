@@ -1,24 +1,24 @@
-ASIF PORTFOLIO STARTER
+MD. ASIFUZZAMAN — PORTFOLIO REDESIGN
 
 Files:
-- index.html: website content and sections
-- style.css: design, colors, layout, and responsive styles
-- script.js: mobile menu and current year
+- index.html: Main portfolio page
+- style.css: Responsive styling, themes, textures, and animations
+- script.js: Theme switch, navigation, reveal effects, typing animation, gallery
+- 404.html: Custom GitHub Pages not-found page
+- profile.jpg: Existing profile photo
+- Asif_CV.pdf: Existing CV
+- images/: Existing project screenshots
 
-HOW TO OPEN:
-1. Extract the ZIP file.
-2. Open the folder.
-3. Double-click index.html. It should open in your web browser.
+Run locally:
+1. Open this folder in VS Code.
+2. Open index.html with Live Server, or open it directly in a browser.
 
-HOW TO EDIT:
-- Open the folder in Visual Studio Code if it is installed.
-- Change the name, About Me text, education, skills, projects, and email in index.html.
-- Save the file and refresh the browser.
-- Change colors and design in style.css.
-- Do not claim a skill you do not yet have; label it as "Learning" if appropriate.
+Theme:
+- Dark mode is the default.
+- Light mode uses the requested #f9f6d3 palette.
+- The selected theme is saved in localStorage.
 
-NOTE:
-This is a starter template. Replace placeholder details before publishing. The fonts load from Google Fonts when you have an internet connection.
-
-PROFILE PHOTO:
-- profile.jpg is the portrait used on the homepage. Keep it in the same folder as index.html.
+Notes:
+- Existing project, CV, profile image, screenshots, and social links are preserved.
+- Font Awesome and Google Fonts load from their CDNs; an internet connection is needed for those external assets.
+- GitHub Activity is represented by a link to the public GitHub profile rather than fabricated contribution data.

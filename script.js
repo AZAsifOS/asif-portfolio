@@ -1,110 +1,124 @@
+// Mobile navigation
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
-
-menuToggle.addEventListener('click', () => {
-  const isOpen = navLinks.classList.toggle('open');
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
-  menuToggle.textContent = isOpen ? '✕' : '☰';
+menuToggle?.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded', String(open));
+  menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
 });
+navLinks?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  menuToggle?.setAttribute('aria-expanded', 'false');
+  menuToggle?.setAttribute('aria-label', 'Open navigation');
+}));
 
-navLinks.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.textContent = '☰';
-  });
+// Persistent animated light/dark theme
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+function setTheme(light) {
+  root.classList.toggle('light-mode', light);
+  themeToggle?.setAttribute('aria-pressed', String(light));
+  themeToggle?.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#f9f6d3' : '#090e1b');
+  try { localStorage.setItem('portfolio-theme', light ? 'light' : 'dark'); } catch (error) { /* storage may be unavailable */ }
+}
+let initialLight = root.classList.contains('light-mode');
+try { initialLight = localStorage.getItem('portfolio-theme') === 'light'; } catch (error) {}
+setTheme(initialLight);
+themeToggle?.addEventListener('click', () => setTheme(!root.classList.contains('light-mode')));
+
+// Current year
+const year = document.getElementById('year');
+if (year) year.textContent = new Date().getFullYear();
+
+// Preloader
+window.addEventListener('load', () => {
+  window.setTimeout(() => document.querySelector('.page-loader')?.classList.add('loaded'), 350);
 });
+window.setTimeout(() => document.querySelector('.page-loader')?.classList.add('loaded'), 2200);
 
-document.getElementById('year').textContent = new Date().getFullYear();
-// Project Image Gallery
+// Typing headline
+const typingTarget = document.getElementById('typingText');
+const roles = ['Aspiring Web Developer', 'CSE Graduate', 'Problem Solver', 'Technology Enthusiast'];
+let roleIndex = 0, charIndex = roles[0].length, deleting = false;
+function typeRole() {
+  if (!typingTarget || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const current = roles[roleIndex];
+  charIndex += deleting ? -1 : 1;
+  typingTarget.textContent = current.slice(0, charIndex);
+  let delay = deleting ? 48 : 85;
+  if (!deleting && charIndex === current.length) { deleting = true; delay = 1450; }
+  else if (deleting && charIndex === 0) { deleting = false; roleIndex = (roleIndex + 1) % roles.length; delay = 350; }
+  window.setTimeout(typeRole, delay);
+}
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) window.setTimeout(typeRole, 1800);
 
+// Scroll reveal
+const revealItems = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
+  }), { threshold: 0.12, rootMargin: '0px 0px -35px 0px' });
+  revealItems.forEach(item => revealObserver.observe(item));
+} else revealItems.forEach(item => item.classList.add('is-visible'));
+
+// Scroll progress and active navigation
+const progress = document.getElementById('scrollProgress');
+const sections = [...document.querySelectorAll('main section[id]')];
+function updateScrollUI() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  if (progress) progress.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+  let current = 'home';
+  sections.forEach(section => { if (window.scrollY >= section.offsetTop - 150) current = section.id; });
+  navLinks?.querySelectorAll('a').forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${current}`));
+}
+window.addEventListener('scroll', updateScrollUI, { passive: true });
+updateScrollUI();
+
+// Subtle cursor glow on pointer devices
+const cursorGlow = document.getElementById('cursorGlow');
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  window.addEventListener('pointermove', event => {
+    if (cursorGlow) { cursorGlow.style.left = `${event.clientX}px`; cursorGlow.style.top = `${event.clientY}px`; }
+  }, { passive: true });
+}
+
+// Project screenshot gallery
 const projectImages = [
-    {
-        src: "images/hardware-home.png",
-        caption: "Asif Hardware - Homepage"
-    },
-    {
-        src: "images/hardware-products.png",
-        caption: "Asif Hardware - Products Section"
-    },
-    {
-        src: "images/hardware-admin.png",
-        caption: "Asif Hardware - Admin Dashboard"
-    },
-    {
-        src: "images/hardware-admin 2.png",
-        caption: "Asif Hardware - Admin Screenshot 2"
-    },
-    {
-        src: "images/hardware-admin 3.png",
-        caption: "Asif Hardware - Admin Screenshot 3"
-    }
+  { src: 'images/hardware-home.png', caption: 'Asif Hardware — Homepage' },
+  { src: 'images/hardware-products.png', caption: 'Asif Hardware — Products Section' },
+  { src: 'images/hardware-admin.png', caption: 'Asif Hardware — Admin Dashboard' },
+  { src: 'images/hardware-admin 2.png', caption: 'Asif Hardware — Admin Screenshot 2' },
+  { src: 'images/hardware-admin 3.png', caption: 'Asif Hardware — Admin Screenshot 3' }
 ];
-
-let currentProjectImage = 0;
-
-function openProjectGallery() {
-    currentProjectImage = 0;
-    showProjectImage();
-
-    document.getElementById("projectLightbox").classList.add("active");
+let currentImage = 0;
+const lightbox = document.getElementById('projectLightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxCount = document.getElementById('lightboxCount');
+function showImage() {
+  if (!lightboxImage) return;
+  lightboxImage.src = projectImages[currentImage].src;
+  lightboxCaption.textContent = projectImages[currentImage].caption;
+  lightboxCount.textContent = `${currentImage + 1} / ${projectImages.length}`;
 }
-
-function closeProjectGallery() {
-    document.getElementById("projectLightbox").classList.remove("active");
+function openGallery() {
+  currentImage = 0; showImage(); lightbox?.classList.add('active');
+  lightbox?.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
 }
-
-function changeProjectImage(direction) {
-    currentProjectImage += direction;
-
-    if (currentProjectImage >= projectImages.length) {
-        currentProjectImage = 0;
-    }
-
-    if (currentProjectImage < 0) {
-        currentProjectImage = projectImages.length - 1;
-    }
-
-    showProjectImage();
+function closeGallery() {
+  lightbox?.classList.remove('active'); lightbox?.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
 }
-
-function showProjectImage() {
-    document.getElementById("lightboxImage").src =
-        projectImages[currentProjectImage].src;
-
-    document.getElementById("lightboxCaption").textContent =
-        projectImages[currentProjectImage].caption;
-}
-// Dark / Light Mode Toggle
-const themeToggle = document.getElementById("themeToggle");
-
-if (themeToggle) {
-  const savedTheme = localStorage.getItem("portfolio-theme");
-
-  if (savedTheme === "light") {
-    document.body.classList.add("light-mode");
-  }
-
-  themeToggle.setAttribute(
-    "aria-label",
-    document.body.classList.contains("light-mode")
-      ? "Switch to dark mode"
-      : "Switch to light mode"
-  );
-
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
-
-    const isLightMode = document.body.classList.contains("light-mode");
-
-    localStorage.setItem(
-      "portfolio-theme",
-      isLightMode ? "light" : "dark"
-    );
-
-    themeToggle.setAttribute(
-      "aria-label",
-      isLightMode ? "Switch to dark mode" : "Switch to light mode"
-    );
-  });
-}
+function changeImage(direction) { currentImage = (currentImage + direction + projectImages.length) % projectImages.length; showImage(); }
+document.getElementById('openGallery')?.addEventListener('click', openGallery);
+document.getElementById('lightboxClose')?.addEventListener('click', closeGallery);
+document.getElementById('lightboxPrev')?.addEventListener('click', () => changeImage(-1));
+document.getElementById('lightboxNext')?.addEventListener('click', () => changeImage(1));
+lightbox?.addEventListener('click', event => { if (event.target === lightbox) closeGallery(); });
+document.addEventListener('keydown', event => {
+  if (!lightbox?.classList.contains('active')) return;
+  if (event.key === 'Escape') closeGallery();
+  if (event.key === 'ArrowLeft') changeImage(-1);
+  if (event.key === 'ArrowRight') changeImage(1);
+});
