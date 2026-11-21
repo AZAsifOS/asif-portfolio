@@ -161,61 +161,29 @@ document.addEventListener('keydown', event => {
   if (event.key === 'ArrowRight') changeImage(1);
 });
 
+// Project cards animate into view while normal page scrolling remains untouched.
+const projectCards = [...document.querySelectorAll('.projects-section .project-card')];
+if ('IntersectionObserver' in window && projectCards.length) {
+  const projectObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('project-in-view');
+      else if (entry.boundingClientRect.top < 0) entry.target.classList.add('project-past');
+    });
+  }, { threshold: 0.22, rootMargin: '-8% 0px -12% 0px' });
+  projectCards.forEach(card => projectObserver.observe(card));
+} else projectCards.forEach(card => card.classList.add('project-in-view'));
 
-// Scroll-driven project presentation: the next project appears as the visitor scrolls.
-(() => {
-  const stage = document.getElementById('projectScrollStage');
-  const track = stage?.querySelector('.project-scroll-track');
-  const cards = track ? [...track.querySelectorAll('.project-card')] : [];
-  const progressBar = document.getElementById('projectScrollProgress');
-  if (!stage || cards.length < 2) return;
-
-  let activeIndex = -1;
-  let ticking = false;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function updateProjectOnScroll() {
-    const rect = stage.getBoundingClientRect();
-    const scrollableDistance = Math.max(1, stage.offsetHeight - window.innerHeight);
-    const travelled = Math.min(scrollableDistance, Math.max(0, -rect.top));
-    const progress = travelled / scrollableDistance;
-    const nextIndex = Math.min(cards.length - 1, Math.floor(progress * cards.length + 0.0001));
-
-    if (nextIndex !== activeIndex) {
-      activeIndex = nextIndex;
-      cards.forEach((card, index) => {
-        const active = index === activeIndex;
-        card.classList.toggle('is-scroll-active', active);
-        card.classList.toggle('is-scroll-before', index < activeIndex);
-        card.setAttribute('aria-hidden', String(!active));
-        card.querySelectorAll('a, button').forEach(control => {
-          if (active) control.removeAttribute('tabindex');
-          else control.setAttribute('tabindex', '-1');
-        });
-      });
-    }
-
-    if (progressBar) {
-      progressBar.style.transform = `translateY(${progress * 100}%)`;
-    }
-    ticking = false;
-  }
-
-  function requestUpdate() {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(updateProjectOnScroll);
-    }
-  }
-
-  cards.forEach((card, index) => {
-    card.classList.toggle('is-scroll-active', index === 0);
-    card.setAttribute('aria-hidden', String(index !== 0));
-    if (index !== 0) card.querySelectorAll('a, button').forEach(control => control.setAttribute('tabindex', '-1'));
-  });
-  activeIndex = 0;
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', requestUpdate);
-  if (reducedMotion) track.classList.add('reduced-motion');
-  requestUpdate();
-})();
+// Contact form: prepares an email in the visitor's mail application (no server storage).
+const contactForm = document.getElementById('contactForm');
+contactForm?.addEventListener('submit', event => {
+  event.preventDefault();
+  if (!contactForm.reportValidity()) return;
+  const name = document.getElementById('contactName').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const message = document.getElementById('contactMessage').value.trim();
+  const subject = encodeURIComponent(`Portfolio message from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+  const status = document.getElementById('contactFormStatus');
+  if (status) status.textContent = 'Opening your email application…';
+  window.location.href = `mailto:mdasifuzzaman135@gmail.com?subject=${subject}&body=${body}`;
+});
